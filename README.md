@@ -1,5 +1,29 @@
-Test Count : 1000000, Latency : 5
-Key Just delta:50, delta_per:100, work_per:100
-Number delta:54, delta_per:108, work_per:100.0000799992
-Prefix delta:107, delta_per:214, work_per:100.00113998860012
-Empty delta:64, delta_per:128, work_per:100.00027999720002
+# Performance Metrics
+
+## General Information
+- **Test Count**: 1,000,000  
+- **Latency**: 5  
+
+---
+
+## Key Metrics
+
+### Key
+- **Delta**: 50  
+- **Delta (%)**: 100  
+- **Work (%)**: 100  
+
+### Number
+- **Delta**: 54  
+- **Delta (%)**: 108  
+- **Work (%)**: 100.00008  
+
+### Prefix
+- **Delta**: 107  
+- **Delta (%)**: 214  
+- **Work (%)**: 100.00114  
+
+### Empty
+- **Delta**: 64  
+- **Delta (%)**: 128  
+- **Work (%)**: 100.00028  
