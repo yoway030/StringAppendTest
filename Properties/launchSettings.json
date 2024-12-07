@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "StringAppendTest": {
+      "commandName": "Project",
+      "commandLineArgs": "1000000"
+    }
+  }
+}
