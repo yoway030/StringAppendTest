@@ -7,10 +7,11 @@ internal class Program
     private static void Main(string[] args)
     {
         int count = int.Parse(args[0]);
-        Console.WriteLine($"Test Count : {count}");
+        long networkLatency = 5; // ms
+        Console.WriteLine($"Test Count : {count}, Latency : {networkLatency}");
+
         long standardDelta = 0;
         long standardWork = 0;
-        long networkLatency = 5;
 
         using (StreamWriter writer = new StreamWriter("keys_just.txt"))
         {
