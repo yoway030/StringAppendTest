@@ -3,86 +3,134 @@ using System.Diagnostics;
 
 internal class Program
 {
-    public static string Prefix = "AAAAAAAAAA:";    // <-- :를 붙일지 말지 연산을 빼기 위해서 Prefix는 Empty이거나 :로 끝나도록 설정
+    public static string Prefix = "";
     private static void Main(string[] args)
     {
-        int count = int.Parse(args[0]);
-        long networkLatency = 5; // ms
-        Console.WriteLine($"Test Count : {count}, Latency : {networkLatency}");
+        int count = int.Parse(args[0]); // 시행횟수
+        long networkLatency = 1;        // 레이턴시 ms
+        Prefix = Environment.MachineName + ":"; // <-- :를 붙일지 말지 연산을 빼기 위해서 Prefix는 Empty이거나 :로 끝나도록 설정
 
-        long standardDelta = 0;
-        long standardWork = 0;
+        Console.WriteLine($"Test Count : {count}, Latency : {networkLatency}, MachieName : {Prefix}");
 
-        using (StreamWriter writer = new StreamWriter("keys_just.txt"))
+        long normalDelta = 0;
+        long normalWork = 0;
+        List<string> resultList = new();
+
         {
-            Stopwatch stopwatch1 = new Stopwatch();
-            stopwatch1.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             for (int i = 0; i < count; i++)
             {
                 string key = args[0];
-                writer.WriteLine(key);
+                resultList.Add(key);
             }
-            stopwatch1.Stop();
-            long work = stopwatch1.ElapsedMilliseconds + networkLatency * count;
+            stopwatch.Stop();
+            long delta = stopwatch.ElapsedMilliseconds;
+            long work = delta + networkLatency * count;
 
-            standardDelta = stopwatch1.ElapsedMilliseconds;
-            standardWork = work;
+            normalDelta = delta;
+            normalWork = work;
 
-            Console.WriteLine($"Key Just delta:{stopwatch1.ElapsedMilliseconds}, " +
-                $"delta_per:{(double) stopwatch1.ElapsedMilliseconds / standardDelta * 100.0}, " +
-                $"work_per:{(double) work / standardWork * 100.0}");
+            Console.WriteLine($"Normal delta | {delta} |" +
+                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
+                $"work/normal_work | {(double)work / normalWork * 100.0} |");
         }
 
-        using (StreamWriter writer = new StreamWriter("keys_number.txt"))
+        Prefix = Environment.MachineName + ":";
         {
-            Stopwatch stopwatch1 = new Stopwatch();
-            stopwatch1.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             for (int i = 0; i < count; i++)
             {
-                string key = Random.Shared.Next(10000).ToString();
-                writer.WriteLine(key);
+                string key = MakeKey(args[0]);
+                resultList.Add(key);
             }
-            stopwatch1.Stop();
-            long work = stopwatch1.ElapsedMilliseconds + networkLatency * count;
+            stopwatch.Stop();
+            long delta = stopwatch.ElapsedMilliseconds;
+            long work = delta + networkLatency * count;
 
-            Console.WriteLine($"Number delta:{stopwatch1.ElapsedMilliseconds}, " +
-                $"delta_per:{(double)stopwatch1.ElapsedMilliseconds / standardDelta * 100.0}, " +
-                $"work_per:{(double)work / standardWork * 100.0}");
-        }
-
-        using (StreamWriter writer = new StreamWriter("keys_Prefix.txt"))
-        {
-            Stopwatch stopwatch1 = new Stopwatch();
-            stopwatch1.Start();
-            for (int i = 0; i < count; i++)
-            {
-                string key = MakeKey(Random.Shared.Next(10000).ToString());
-                writer.WriteLine(key);
-            }
-            stopwatch1.Stop();
-            long work = stopwatch1.ElapsedMilliseconds + networkLatency * count;
-
-            Console.WriteLine($"Prefix delta:{stopwatch1.ElapsedMilliseconds}, " +
-                $"delta_per:{(double)stopwatch1.ElapsedMilliseconds / standardDelta * 100.0}, " +
-                $"work_per:{(double)work / standardWork * 100.0}");
+            Console.WriteLine($"Prefix_normal delta | {delta} |" +
+                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
+                $"work/normal_work | {(double)work / normalWork * 100.0} |");
         }
 
         Prefix = String.Empty;
-        using (StreamWriter writer = new StreamWriter("keys_empty.txt"))
         {
-            Stopwatch stopwatch1 = new Stopwatch();
-            stopwatch1.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (int i = 0; i < count; i++)
+            {
+                string key = MakeKey(args[0]);
+                resultList.Add(key);
+            }
+            stopwatch.Stop();
+            long delta = stopwatch.ElapsedMilliseconds;
+            long work = delta + networkLatency * count;
+
+            Console.WriteLine($"Empty_normal delta | {delta} |" +
+                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
+                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+        }
+
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (int i = 0; i < count; i++)
+            {
+                string key = Random.Shared.Next(10000).ToString();
+                resultList.Add(key);
+            }
+            stopwatch.Stop();
+            long delta = stopwatch.ElapsedMilliseconds;
+            long work = delta + networkLatency * count;
+
+            Console.WriteLine($"Number delta | {delta} |" +
+                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
+                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+        }
+
+        Prefix = Environment.MachineName + ":";
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             for (int i = 0; i < count; i++)
             {
                 string key = MakeKey(Random.Shared.Next(10000).ToString());
+                resultList.Add(key);
+            }
+            stopwatch.Stop();
+            long delta = stopwatch.ElapsedMilliseconds;
+            long work = delta + networkLatency * count;
+
+            Console.WriteLine($"Prefix_Number delta | {delta} |" +
+                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
+                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+        }
+
+        Prefix = String.Empty;
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (int i = 0; i < count; i++)
+            {
+                string key = MakeKey(Random.Shared.Next(10000).ToString());
+                resultList.Add(key);
+            }
+            stopwatch.Stop();
+            long delta = stopwatch.ElapsedMilliseconds;
+            long work = delta + networkLatency * count;
+
+            Console.WriteLine($"Empty_Number delta | {delta} |" +
+                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
+                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+        }
+
+        using (StreamWriter writer = new StreamWriter("result.txt"))
+        {
+            foreach (string key in resultList)
+            {
                 writer.WriteLine(key);
             }
-            stopwatch1.Stop();
-            long work = stopwatch1.ElapsedMilliseconds + networkLatency * count;
-
-            Console.WriteLine($"Empty delta:{stopwatch1.ElapsedMilliseconds}, " +
-                $"delta_per:{(double)stopwatch1.ElapsedMilliseconds / standardDelta * 100.0}, " +
-                $"work_per:{(double)work / standardWork * 100.0}");
         }
     }
 
