@@ -12,11 +12,12 @@ internal class Program
 
         Console.WriteLine($"Test Count : {count}, Latency : {networkLatency}, MachieName : {Prefix}");
 
-        long normalDelta = 0;
-        long normalWork = 0;
-        List<string> resultList = new();
+        long normalDelta = 1;
+        long normalWork = 1;
+        List<string> totalList = new();
 
         {
+            List<string> resultList = new();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for (int i = 0; i < count; i++)
@@ -27,17 +28,17 @@ internal class Program
             stopwatch.Stop();
             long delta = stopwatch.ElapsedMilliseconds;
             long work = delta + networkLatency * count;
+            totalList.AddRange(resultList);
 
             normalDelta = delta;
             normalWork = work;
 
-            Console.WriteLine($"Normal delta | {delta} |" +
-                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
-                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+            Console.WriteLine($"| Normal delta | {delta} | {(double)delta / normalDelta * 100.0} | {(double)work / normalWork * 100.0} |");
         }
 
         Prefix = Environment.MachineName + ":";
         {
+            List<string> resultList = new();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for (int i = 0; i < count; i++)
@@ -48,14 +49,14 @@ internal class Program
             stopwatch.Stop();
             long delta = stopwatch.ElapsedMilliseconds;
             long work = delta + networkLatency * count;
+            totalList.AddRange(resultList);
 
-            Console.WriteLine($"Prefix_normal delta | {delta} |" +
-                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
-                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+            Console.WriteLine($"| Prefix_normal delta | {delta} | {(double)delta / normalDelta * 100.0} | {(double)work / normalWork * 100.0} |");
         }
 
         Prefix = String.Empty;
         {
+            List<string> resultList = new();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for (int i = 0; i < count; i++)
@@ -66,13 +67,13 @@ internal class Program
             stopwatch.Stop();
             long delta = stopwatch.ElapsedMilliseconds;
             long work = delta + networkLatency * count;
+            totalList.AddRange(resultList);
 
-            Console.WriteLine($"Empty_normal delta | {delta} |" +
-                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
-                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+            Console.WriteLine($"| Empty_normal delta | {delta} | {(double)delta / normalDelta * 100.0} | {(double)work / normalWork * 100.0} |");
         }
 
         {
+            List<string> resultList = new();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for (int i = 0; i < count; i++)
@@ -83,14 +84,14 @@ internal class Program
             stopwatch.Stop();
             long delta = stopwatch.ElapsedMilliseconds;
             long work = delta + networkLatency * count;
+            totalList.AddRange(resultList);
 
-            Console.WriteLine($"Number delta | {delta} |" +
-                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
-                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+            Console.WriteLine($"| Number delta | {delta} | {(double)delta / normalDelta * 100.0} | {(double)work / normalWork * 100.0} |");
         }
 
         Prefix = Environment.MachineName + ":";
         {
+            List<string> resultList = new();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for (int i = 0; i < count; i++)
@@ -101,14 +102,14 @@ internal class Program
             stopwatch.Stop();
             long delta = stopwatch.ElapsedMilliseconds;
             long work = delta + networkLatency * count;
+            totalList.AddRange(resultList);
 
-            Console.WriteLine($"Prefix_Number delta | {delta} |" +
-                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
-                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+            Console.WriteLine($"| Prefix_Number delta | {delta} | {(double)delta / normalDelta * 100.0} | {(double)work / normalWork * 100.0} |");
         }
 
         Prefix = String.Empty;
         {
+            List<string> resultList = new();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             for (int i = 0; i < count; i++)
@@ -119,15 +120,14 @@ internal class Program
             stopwatch.Stop();
             long delta = stopwatch.ElapsedMilliseconds;
             long work = delta + networkLatency * count;
+            totalList.AddRange(resultList);
 
-            Console.WriteLine($"Empty_Number delta | {delta} |" +
-                $"delta/normal_delta | {(double)delta / normalDelta * 100.0} |" +
-                $"work/normal_work | {(double)work / normalWork * 100.0} |");
+            Console.WriteLine($"| Empty_Number delta | {delta} | {(double)delta / normalDelta * 100.0} | {(double)work / normalWork * 100.0} |");
         }
 
         using (StreamWriter writer = new StreamWriter("result.txt"))
         {
-            foreach (string key in resultList)
+            foreach (string key in totalList)
             {
                 writer.WriteLine(key);
             }
