@@ -1,8 +1,8 @@
-| 작업형태 | 시행시간 | normal과 비교 |  normal과 비교 | Latency고려 noraml과 비교 | Latency고려 noraml과 비교 |
-|-------|-------|-------|-------|-------|-------|
-| Normal delta | 151 |delta/normal_delta | 100 |work/normal_work | 100 |
-| Prefix_normal delta | 1382 |delta/normal_delta | 915.2317880794701 |work/normal_work | 100.0123098141218 |
-| Empty_normal delta | 67 |delta/normal_delta | 44.370860927152314 |work/normal_work | 99.9991600126838 |
-| Number delta | 1039 |delta/normal_delta | 688.0794701986755 |work/normal_work | 100.00887986591403 |
-| Prefix_Number delta | 2230 |delta/normal_delta | 1476.82119205298 |work/normal_work | 100.02078968607574 |
-| Empty_Number delta | 713 |delta/normal_delta | 472.18543046357615 |work/normal_work | 100.00561991513928 |
+| 작업형태 | 시행시간 | normal과 비교 | Latency고려 noraml과 비교 |
+|-------|-------|-------|-------|
+| Normal delta | 159 | 100 | 100 |
+| Prefix_normal delta | 1666 | 1047.7987421383648 | 100.0150697603908 |
+| Empty_normal delta | 119 | 74.84276729559748 | 99.9996000063599 |
+| Number delta | 1047 | 658.4905660377358 | 100.00887985881025 |
+| Prefix_Number delta | 2345 | 1474.8427672955975 | 100.02185965243153 |
+| Empty_Number delta | 1350 | 849.0566037735849 | 100.01190981063401 |
